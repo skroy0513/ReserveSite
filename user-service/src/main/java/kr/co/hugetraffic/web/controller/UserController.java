@@ -27,12 +27,7 @@ public class UserController {
 
     @GetMapping("/")
     public String home(@RequestHeader HttpHeaders headers) {
-        String Auths = headers.get("Auth").get(0);
-        String userId = headers.get("userId").get(0);
-//        String token = headers.get("Authorization").get(0).substring(7);
-
-//        return "hello world, " + Auths + "," + userId + ", token : " + token;
-        return "hello world, " + Auths + "," + userId;
+        return "hello world";
     }
 
     @PostMapping("/register")
