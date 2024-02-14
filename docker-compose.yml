@@ -1,0 +1,25 @@
+version: '3'
+services:
+  db:
+    container_name: hugetraffic-mysql
+    image: mysql:latest
+    restart: always
+    ports:
+      - 3308:3306
+    volumes:
+      - mydata-volume:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=zxcv1234
+      - MYSQL_DATABASE=reservesite_db
+      - MYSQL_USER=reservesite
+      - MYSQL_PASSWORD=zxcv1234
+      - TZ=Asia/Seoul
+  subDb:
+    container_name: hugetraffic-redis
+    image: redis:latest
+    restart: always
+    hostname: reserve
+    ports:
+      - 6378:6379
+volumes:
+  mydata-volume:
