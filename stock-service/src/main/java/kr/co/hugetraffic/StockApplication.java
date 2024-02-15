@@ -1,4 +1,4 @@
-package kr.co.hugetraffic.web.controller;
+package kr.co.hugetraffic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
