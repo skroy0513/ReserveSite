@@ -41,7 +41,7 @@ public class ProductController {
      */
     @GetMapping("/stock")
     public ResponseEntity<Integer> getstock(@RequestParam("id") Long productId) {
-        int stock = productService.getStrockById(productId);
+        int stock = productService.getStockById(productId);
         return ResponseEntity.ok(stock);
     }
 
@@ -53,6 +53,9 @@ public class ProductController {
                                              @RequestHeader HttpHeaders headers) {
         // 구매하려는 상품의 정보를 표시
         Long userId = Long.valueOf(headers.get("userId").get(0));
+        // 상품의 재고가 있는지 확인
+        productService.readyForPay(productId);
+        // 상품의 재고를 1 줄이고, 결제 정보를 만든다.
         PayDto payDto = productService.preInfoPay(userId, productId);
         // 유저정보도 표시할 것
         return ResponseEntity.ok(payDto);
