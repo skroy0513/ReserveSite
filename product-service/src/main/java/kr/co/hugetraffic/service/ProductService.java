@@ -1,5 +1,6 @@
 package kr.co.hugetraffic.service;
 
+import kr.co.hugetraffic.client.StockClient;
 import kr.co.hugetraffic.dto.PayDto;
 import kr.co.hugetraffic.entity.OrderInfo;
 import kr.co.hugetraffic.entity.Product;
@@ -20,6 +21,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final OrderInfoRepository orderInfoRepository;
+    private final StockClient stockClient;
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
@@ -30,11 +32,11 @@ public class ProductService {
                 .orElseThrow(() -> new NotFoundException("해당 상품이 없습니다."));
     }
 
-    public int getStrockById(Long productId) {
-        Product product = productRepository.findById(productId)
+    public int getStockById(Long productId) {
+        productRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException("해당 상품이 없습니다."));
 
-        return product.getStock();
+        return stockClient.getStock(productId);
     }
 
     public boolean buyProduct(Long userId, Long productId) {

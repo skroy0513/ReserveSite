@@ -41,7 +41,7 @@ public class ProductController {
      */
     @GetMapping("/stock")
     public ResponseEntity<Integer> getstock(@RequestParam("id") Long productId) {
-        int stock = productService.getStrockById(productId);
+        int stock = productService.getStockById(productId);
         return ResponseEntity.ok(stock);
     }
 
