@@ -24,4 +24,7 @@ public class OrderInfo extends BaseDateTimeEntity{
 
     @Column(name = "product_id")
     private Long productId;
+
+    @Column(name = "order_status")
+    private String status;
 }
