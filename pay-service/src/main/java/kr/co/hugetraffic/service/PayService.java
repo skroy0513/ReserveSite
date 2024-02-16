@@ -21,6 +21,9 @@ public class PayService {
     private final StockClient stockClient;
     private final OrderClient orderClient;
 
+    /*
+    결제 화면 진입
+     */
     public OrderDto create(Long userId, Long productId) {
         // Product 모듈과 통신해서 예약구매인지 판별
         boolean isPreOrder = productClient.isPreOrder(productId);
@@ -40,6 +43,21 @@ public class PayService {
         }
         // Order 모듈과 통신하여 Order를 생성하고, dto를 받아올 것
         OrderDto dto = orderClient.createOrder(userId, productId);
+        return dto;
+    }
+
+    /*
+    결제 시도
+     */
+    public OrderDto pay(Long userId, Long productId) {
+        // 20%의 유저는 결제 실패(랜덤 확률)
+        if(Math.random() <= 0.2) {
+            // 실패시 재고 수량 증가
+            stockClient.increaseStock(productId);
+            orderClient.failOrder(userId, productId);
+            throw new RuntimeException("결제에 실패하였습니다.");
+        }
+        OrderDto dto = orderClient.successOrder(userId, productId);
         return dto;
     }
 }
