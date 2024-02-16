@@ -27,13 +27,17 @@ public class StockService {
 
     public int decreaseStock(Long productId) {
         Long stock = redisTemplate.opsForValue().decrement(productId);
+        int stockInt = stock.intValue();
+        if (stockInt < 0) {
+            redisTemplate.opsForValue().set(productId, "0");
+        }
         return stock.intValue();
     }
 
     public int increaseStock(Long productId) {
         Long stock = redisTemplate.opsForValue().increment(productId);
         int stockInt = stock.intValue();
-        if (stockInt >= maxStock) {
+        if (stockInt > maxStock) {
             redisTemplate.opsForValue().set(productId, String.valueOf(maxStock));
         }
         return stock.intValue();
