@@ -40,7 +40,8 @@ public class OrderController {
     @GetMapping("/feign/create/{productId}")
     public ResponseEntity<OrderDto> create(@RequestParam("userId") Long userId,
                                            @PathVariable Long productId) {
-        return null;
+        OrderDto dto = orderService.createOrder(userId, productId);
+        return ResponseEntity.ok(dto);
     }
 
     /*
@@ -49,7 +50,8 @@ public class OrderController {
     @GetMapping("/feign/success/{productId}")
     public ResponseEntity<OrderDto> success(@RequestParam("userId") Long userId,
                                             @PathVariable Long productId) {
-        return null;
+        OrderDto dto = orderService.successOrder(userId, productId);
+        return ResponseEntity.ok(dto);
     }
 
     /*
@@ -58,6 +60,7 @@ public class OrderController {
     @GetMapping("/feign/fail/{productId}")
     public ResponseEntity<OrderDto> fail(@RequestParam("userId") Long userId,
                                          @PathVariable Long productId) {
-        return null;
+        OrderDto dto = orderService.failOrder(userId, productId);
+        return ResponseEntity.ok(dto);
     }
 }
