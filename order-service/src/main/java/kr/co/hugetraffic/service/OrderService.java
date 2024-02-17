@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,15 +46,25 @@ public class OrderService {
         return OrderDto.convert(order);
     }
 
-//    /*
-//    주문 성공상태로 변환
-//     */
-//    public OrderDto successOrder(Long userId, Long productId) {
-//    }
-//
-//    /*
-//    주문 실패상태로 변환
-//     */
-//    public OrderDto failOrder(Long userId, Long productId) {
-//    }
+    /*
+    주문 성공상태로 변환
+     */
+    public OrderDto successOrder(Long userId, Long productId) {
+        Order order = orderRepository.findByUserIdAndProductId(userId, productId)
+                .orElseThrow(() -> new NotFoundException("주문정보가 없습니다."));
+        order.setStatus(OrderStatus.SUCCESS.getOrderStatus());
+        orderRepository.save(order);
+        return OrderDto.convert(order);
+    }
+
+    /*
+    주문 실패상태로 변환
+     */
+    public OrderDto failOrder(Long userId, Long productId) {
+        Order order = orderRepository.findByUserIdAndProductId(userId, productId)
+                .orElseThrow(() -> new NotFoundException("주문정보가 없습니다."));
+        order.setStatus(OrderStatus.FAIL.getOrderStatus());
+        orderRepository.save(order);
+        return OrderDto.convert(order);
+    }
 }
