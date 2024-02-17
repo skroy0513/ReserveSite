@@ -39,10 +39,16 @@ public class OrderService {
     주문정보 생성하기
      */
     public OrderDto createOrder(Long userId, Long productId) {
-        Order order = orderRepository.save(Order.builder()
+        Order order = Order.builder()
                 .userId(userId)
                 .productId(productId)
-                .status(OrderStatus.PENDING.getOrderStatus()).build());
+                .status(OrderStatus.PENDING.getOrderStatus()).build();
+        log.info(order.toString());
+        orderRepository.save(order);
+//        Order order = orderRepository.save(Order.builder()
+//                .userId(userId)
+//                .productId(productId)
+//                .status(OrderStatus.PENDING.getOrderStatus()).build());
         return OrderDto.convert(order);
     }
 

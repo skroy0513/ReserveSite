@@ -4,13 +4,17 @@ server:
 logging:
   level:
     root: info
-
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
 spring:
   profiles:
     include:
       - dev
   application:
-    name: pay-service
+    name: order-service
 
 eureka:
   client:
@@ -21,3 +25,4 @@ eureka:
   instance:
     instance-id: ${spring.application.name}:${random.value}
     hostname: localhost
+

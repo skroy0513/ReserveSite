@@ -40,10 +40,15 @@ public class ProductService {
         return stockClient.getStock(productId);
     }
 
-    public OrderInfo getOrderInfo(Long userId, Long productId) {
-        OrderInfo orderInfo = orderInfoRepository.findOrderInfoByProductIdAndUserId(productId, userId)
-                .orElseThrow(() -> new NotFoundException("해당 상품의 주문정보가 없습니다."));
-        return orderInfo;
-    }
+//    public OrderInfo getOrderInfo(Long userId, Long productId) {
+//        OrderInfo orderInfo = orderInfoRepository.findOrderInfoByProductIdAndUserId(productId, userId)
+//                .orElseThrow(() -> new NotFoundException("해당 상품의 주문정보가 없습니다."));
+//        return orderInfo;
+//    }
 
+    public boolean isPreOrder(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("해당 상품이 없습니다."));
+        return product.isPreorder();
+    }
 }

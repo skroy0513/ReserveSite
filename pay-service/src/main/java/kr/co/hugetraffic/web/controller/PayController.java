@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,7 +24,7 @@ public class PayController {
      */
     @GetMapping("/{productId}")
     public ResponseEntity<OrderDto> readyToOrder(@PathVariable Long productId,
-                                                 HttpHeaders headers) {
+                                                 @RequestHeader HttpHeaders headers) {
         Long userId = Long.valueOf(headers.get("userId").get(0));
         // 주문정보 생성
         OrderDto dto = payService.create(userId, productId);
@@ -40,7 +37,7 @@ public class PayController {
      */
     @PostMapping("/{productId}")
     public ResponseEntity<OrderDto> payToOrder(@PathVariable Long productId,
-                                               HttpHeaders headers) {
+                                               @RequestHeader HttpHeaders headers) {
         Long userId = Long.valueOf(headers.get("userId").get(0));
         OrderDto dto = payService.pay(userId,productId);
         return ResponseEntity.ok(dto);

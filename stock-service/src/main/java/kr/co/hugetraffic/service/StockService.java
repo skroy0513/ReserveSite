@@ -26,19 +26,21 @@ public class StockService {
     }
 
     public int decreaseStock(Long productId) {
-        Long stock = redisTemplate.opsForValue().decrement(productId);
+        String productIdstr = String.valueOf(productId);
+        Long stock = redisTemplate.opsForValue().decrement(productIdstr);
         int stockInt = stock.intValue();
         if (stockInt < 0) {
-            redisTemplate.opsForValue().set(productId, "0");
+            redisTemplate.opsForValue().set(productIdstr, "0");
         }
         return stock.intValue();
     }
 
     public int increaseStock(Long productId) {
-        Long stock = redisTemplate.opsForValue().increment(productId);
+        String productIdstr = String.valueOf(productId);
+        Long stock = redisTemplate.opsForValue().increment(productIdstr);
         int stockInt = stock.intValue();
         if (stockInt > maxStock) {
-            redisTemplate.opsForValue().set(productId, String.valueOf(maxStock));
+            redisTemplate.opsForValue().set(productIdstr, String.valueOf(maxStock));
         }
         return stock.intValue();
     }

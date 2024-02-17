@@ -10,7 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Builder
 @Data
-@Table(name = "order")
+@Table(name = "order_info")
 @DynamicInsert
 @DynamicUpdate
 @Entity
