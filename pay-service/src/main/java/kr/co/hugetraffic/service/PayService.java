@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -31,7 +30,7 @@ public class PayService {
         if (isPreOrder) {
             LocalDateTime opentime =productClient.getOpenTime(productId);
             LocalDateTime now = LocalDateTime.now();
-            if (now.compareTo(opentime) < 0) {
+            if (now.isBefore(opentime)) {
                 throw new RuntimeException("아직 상품을 구매할 수 없습니다.");
             }
         }
@@ -42,8 +41,7 @@ public class PayService {
             throw new NotEnoughStock("재고가 부족합니다.");
         }
         // Order 모듈과 통신하여 Order를 생성하고, dto를 받아올 것
-        OrderDto dto = orderClient.createOrder(userId, productId);
-        return dto;
+        return orderClient.createOrder(userId, productId);
     }
 
     /*
@@ -57,7 +55,6 @@ public class PayService {
             orderClient.failOrder(userId, productId);
             throw new RuntimeException("결제에 실패하였습니다.");
         }
-        OrderDto dto = orderClient.successOrder(userId, productId);
-        return dto;
+        return orderClient.successOrder(userId, productId);
     }
 }
