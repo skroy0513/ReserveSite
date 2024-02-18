@@ -1,7 +1,8 @@
 package kr.co.hugetraffic.service;
 
-import kr.co.hugetraffic.entity.Product;
-import kr.co.hugetraffic.repository.ProductRepository;
+import jakarta.ws.rs.NotFoundException;
+import kr.co.hugetraffic.entity.Stock;
+import kr.co.hugetraffic.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,16 +14,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class StockService {
 
-    private final ProductRepository productRepository;
+    private final StockRepository stockRepository;
     private final RedisTemplate redisTemplate;
     @Value("${inventory.stock}")
     private int maxStock;
 
     public int getStockById(Long productId) {
-//        Product product = productRepository.findById(productId)
-//                .orElseThrow(() -> new RuntimeException("해당 상품이 없습니다."));
-        String stock = (String) redisTemplate.opsForValue().get(String.valueOf(productId));
-        return  Integer.valueOf(stock);
+        Stock stock = stockRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("해당 상품이 없습니다."));
+        return  stock.getStock();
     }
 
     public int decreaseStock(Long productId) {

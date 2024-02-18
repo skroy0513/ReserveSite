@@ -35,9 +35,9 @@ public class PayService {
             }
         }
 
-        // Stock 모듈과 통신해서 재고를 감소, 없다면 오류
-        int stock = stockClient.decreaseStock(productId);
-        if (stock < 0) {
+        // Stock 모듈과 통신해서 재고가 있는지 확인, 없으면 에러
+        int stock = stockClient.getStock(productId);
+        if (stock <= 0) {
             throw new NotEnoughStock("재고가 부족합니다.");
         }
         // Order 모듈과 통신하여 Order를 생성하고, dto를 받아올 것

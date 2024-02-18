@@ -1,11 +1,8 @@
 package kr.co.hugetraffic.web.controller;
 
-import kr.co.hugetraffic.dto.PayDto;
-import kr.co.hugetraffic.entity.OrderInfo;
 import kr.co.hugetraffic.entity.Product;
 import kr.co.hugetraffic.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,19 +41,6 @@ public class ProductController {
         int stock = productService.getStockById(productId);
         return ResponseEntity.ok(stock);
     }
-
-//    /*
-//    결제 성공한 경우 주문정보를 불러온다.
-//     */
-//    @GetMapping("/order/info")
-//    public ResponseEntity<OrderInfo> orderInfo(@RequestParam("id") Long productId,
-//                                               @RequestHeader HttpHeaders headers) {
-//        // 유저정보와 제품아이디를 가지고 해당 상품의 구매 이력이 있는지 확인
-//        // 있다면 주문정보를 return
-//        Long userId = Long.valueOf(headers.get("userId").get(0));
-//        OrderInfo orderInfo = productService.getOrderInfo(userId, productId);
-//        return ResponseEntity.ok(orderInfo);
-//    }
 
     @GetMapping("/feign/isPreOrder/{productId}")
     public ResponseEntity<Boolean> isPreOrder(@PathVariable Long productId) {

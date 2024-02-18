@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,16 +38,12 @@ public class OrderService {
     주문정보 생성하기
      */
     public OrderDto createOrder(Long userId, Long productId) {
-        Order order = Order.builder()
-                .userId(userId)
-                .productId(productId)
-                .status(OrderStatus.PENDING.getOrderStatus()).build();
-        log.info(order.toString());
-        orderRepository.save(order);
-//        Order order = orderRepository.save(Order.builder()
-//                .userId(userId)
-//                .productId(productId)
-//                .status(OrderStatus.PENDING.getOrderStatus()).build());
+        // 주문 정보가 있으면 기존 정보를 불러오고 없으면 생성 (orElse메서드 쓰기)
+        Order order = orderRepository.findByUserIdAndProductId(userId, productId)
+                .orElse(orderRepository.save(Order.builder()
+                        .userId(userId)
+                        .productId(productId)
+                        .status(OrderStatus.PENDING.getOrderStatus()).build()));
         return OrderDto.convert(order);
     }
 

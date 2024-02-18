@@ -34,9 +34,6 @@ public class Product extends BaseDateTimeEntity{
     @Column(name = "product_price")
     private int price;
 
-    @Column(name = "product_stock")
-    private int stock;
-
     @Column(name = "is_preorder")
     private boolean isPreorder;
 

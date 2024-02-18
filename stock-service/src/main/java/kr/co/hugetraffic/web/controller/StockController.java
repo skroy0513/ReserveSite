@@ -12,7 +12,7 @@ public class StockController {
 
     private final StockService stockService;
 
-    // redis에 저장된 재고수량을 불러오기
+    // DB에 저장된 재고수량을 불러오기
     @GetMapping("/{productId}")
     public ResponseEntity<Integer> getStock(@PathVariable Long productId) {
         int stock = stockService.getStockById(productId);
