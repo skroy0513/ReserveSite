@@ -2,6 +2,7 @@ package kr.co.hugetraffic.service;
 
 import jakarta.ws.rs.NotFoundException;
 import kr.co.hugetraffic.entity.Stock;
+import kr.co.hugetraffic.exception.NotEnoughStock;
 import kr.co.hugetraffic.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,15 @@ public class StockService {
         int stockInt = stock.intValue();
         if (stockInt < 0) {
             redisTemplate.opsForValue().set(productIdstr, "0");
+            throw new NotEnoughStock("재고가 부족합니다.");
         }
+        Stock dbstock = stockRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("해당 상품이 없습니다."));
+        if (dbstock.getStock() <= 0 ) {
+            throw new NotEnoughStock("재고가 부족합니다.");
+        }
+        dbstock.setStock(dbstock.getStock() - 1);
+        stockRepository.save(dbstock);
         return stock.intValue();
     }
 

@@ -39,7 +39,7 @@ public class OrderController {
      */
     @GetMapping("/feign/create/{productId}")
     public ResponseEntity<OrderDto> create(@RequestParam("userId") Long userId,
-                                           @PathVariable Long productId) {
+                                           @PathVariable("productId") Long productId) {
         OrderDto dto = orderService.createOrder(userId, productId);
         return ResponseEntity.ok(dto);
     }

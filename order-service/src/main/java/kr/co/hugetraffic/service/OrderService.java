@@ -40,7 +40,7 @@ public class OrderService {
     public OrderDto createOrder(Long userId, Long productId) {
         // 주문 정보가 있으면 기존 정보를 불러오고 없으면 생성 (orElse메서드 쓰기)
         Order order = orderRepository.findByUserIdAndProductId(userId, productId)
-                .orElse(orderRepository.save(Order.builder()
+                .orElseGet(() -> orderRepository.save(Order.builder()
                         .userId(userId)
                         .productId(productId)
                         .status(OrderStatus.PENDING.getOrderStatus()).build()));

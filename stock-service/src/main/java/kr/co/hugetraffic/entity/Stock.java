@@ -8,10 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "product")
+@Table(name = "stock")
 @Data
 @Builder
 @NoArgsConstructor
@@ -25,6 +23,6 @@ public class Stock{
     @Column(name = "product_id")
     private Long id;
 
-    @Column(name = "stock")
+    @Column(name = "product_stock")
     private int stock;
 }

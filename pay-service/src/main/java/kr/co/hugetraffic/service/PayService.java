@@ -41,7 +41,7 @@ public class PayService {
             throw new NotEnoughStock("재고가 부족합니다.");
         }
         // Order 모듈과 통신하여 Order를 생성하고, dto를 받아올 것
-        return orderClient.createOrder(userId, productId);
+        return orderClient.createOrder(productId, userId);
     }
 
     /*
@@ -51,10 +51,11 @@ public class PayService {
         // 20%의 유저는 결제 실패(랜덤 확률)
         if(Math.random() <= 0.2) {
             // 실패시 재고 수량 증가
-            stockClient.increaseStock(productId);
-            orderClient.failOrder(userId, productId);
+            orderClient.failOrder(productId, userId);
             throw new RuntimeException("결제에 실패하였습니다.");
         }
-        return orderClient.successOrder(userId, productId);
+        // 성공한 경우 redis, db에서 재고를 줄일 것
+        stockClient.decreaseStock(productId);
+        return orderClient.successOrder(productId, userId);
     }
 }
