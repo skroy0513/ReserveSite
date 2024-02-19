@@ -10,10 +10,11 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/api-gateway" />
+            <option value="$PROJECT_DIR$/order-service" />
+            <option value="$PROJECT_DIR$/pay-service" />
             <option value="$PROJECT_DIR$/product-service" />
             <option value="$PROJECT_DIR$/service-discovery" />
             <option value="$PROJECT_DIR$/stock-service" />
-            <option value="$PROJECT_DIR$/user-service" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -8,35 +8,21 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "product")
+@Table(name = "stock")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class Product extends BaseDateTimeEntity{
+public class Stock{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long id;
 
-    @Column(name = "product_name")
-    private String name;
-
-    @Column(name = "product_content")
-    private String content;
-
-    @Column(name = "product_price")
-    private int price;
-
-    @Column(name = "is_preorder")
-    private boolean isPreorder;
-
-    @Column(name = "product_open_time")
-    private LocalDateTime openTime;
+    @Column(name = "product_stock")
+    private int stock;
 }
