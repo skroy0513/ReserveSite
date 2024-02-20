@@ -25,15 +25,15 @@ public class PayService {
      */
     public OrderDto create(Long userId, Long productId) {
         // Product 모듈과 통신해서 예약구매인지 판별
-        boolean isPreOrder = productClient.isPreOrder(productId);
+//        boolean isPreOrder = productClient.isPreOrder(productId);
         // 예약구매상품이라면 해당상품의 오픈시간과 현재 시간과 비교
-        if (isPreOrder) {
+//        if (isPreOrder) {
             LocalDateTime opentime =productClient.getOpenTime(productId);
             LocalDateTime now = LocalDateTime.now();
             if (now.isBefore(opentime)) {
                 throw new RuntimeException("아직 상품을 구매할 수 없습니다.");
             }
-        }
+//        }
 
         // Stock 모듈과 통신해서 재고가 있는지 확인, 없으면 에러
         int stock = stockClient.getStock(productId);
@@ -50,12 +50,12 @@ public class PayService {
     public OrderDto pay(Long userId, Long productId) {
         // 20%의 유저는 결제 실패(랜덤 확률)
         if(Math.random() <= 0.2) {
-            // 실패시 재고 수량 증가
             orderClient.failOrder(productId, userId);
             throw new RuntimeException("결제에 실패하였습니다.");
         }
         // 성공한 경우 redis, db에서 재고를 줄일 것
+        OrderDto dto = orderClient.successOrder(productId, userId);
         stockClient.decreaseStock(productId);
-        return orderClient.successOrder(productId, userId);
+        return dto;
     }
 }

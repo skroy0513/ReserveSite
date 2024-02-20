@@ -53,6 +53,9 @@ public class OrderService {
     public OrderDto successOrder(Long userId, Long productId) {
         Order order = orderRepository.findByUserIdAndProductId(userId, productId)
                 .orElseThrow(() -> new NotFoundException("주문정보가 없습니다."));
+        if (order.getStatus().equals("success")) {
+            throw new NotFoundException("이미 주문한 제품입니다.");
+        }
         order.setStatus(OrderStatus.SUCCESS.getOrderStatus());
         orderRepository.save(order);
         return OrderDto.convert(order);

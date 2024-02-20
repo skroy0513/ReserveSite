@@ -46,6 +46,7 @@ public class PayController {
     public ResponseEntity<OrderDto> payToOrder(@PathVariable Long productId,
                                                @RequestHeader HttpHeaders headers) {
         Long userId = Long.valueOf(headers.get("userId").get(0));
+        log.info("userId : {}", userId);
         OrderDto dto = payService.pay(userId,productId);
         return ResponseEntity.ok(dto);
     }
