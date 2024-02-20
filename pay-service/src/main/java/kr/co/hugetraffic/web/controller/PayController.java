@@ -1,5 +1,7 @@
 package kr.co.hugetraffic.web.controller;
 
+import feign.Response;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Path;
 import kr.co.hugetraffic.dto.OrderDto;
 import kr.co.hugetraffic.service.PayService;
@@ -17,6 +19,11 @@ import org.springframework.web.bind.annotation.*;
 public class PayController {
 
     private final PayService payService;
+
+    @GetMapping("/welcome")
+    public ResponseEntity<Integer> welcome(HttpServletRequest request) {
+        return ResponseEntity.ok(request.getServerPort());
+    }
 
     /*
     결제 화면 진입
