@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 
-@FeignClient(name = "product-service", url = "localhost:80/product/feign")
-public interface ProductClient {
-
+@FeignClient(name = "preOrderProduct-service", url = "localhost:80/pre/product/feign")
+public interface PreOrderProductClient {
+    
     @GetMapping("/isPreOrder/{productId}")
     Boolean isPreOrder(@PathVariable Long productId);
 

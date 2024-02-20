@@ -20,14 +20,9 @@ public class PayController {
 
     private final PayService payService;
 
-    @GetMapping("/welcome")
-    public ResponseEntity<Integer> welcome(HttpServletRequest request) {
-        return ResponseEntity.ok(request.getServerPort());
-    }
-
     /*
     결제 화면 진입
-    주문 정보를 생성하고, 재고를 감소시킨다.
+    주문 정보를 생성한다.
      */
     @GetMapping("/{productId}")
     public ResponseEntity<OrderDto> readyToOrder(@PathVariable Long productId,
@@ -35,6 +30,18 @@ public class PayController {
         Long userId = Long.valueOf(headers.get("userId").get(0));
         // 주문정보 생성
         OrderDto dto = payService.create(userId, productId);
+        return ResponseEntity.ok(dto);
+    }
+
+    /*
+    예약구매 결제 화면 진입
+    주문 정보를 생성한다.
+     */
+    @GetMapping("/pre/{productId}")
+    public ResponseEntity<OrderDto> readyToPreOrder(@PathVariable Long productId,
+                                                    @RequestHeader HttpHeaders headers) {
+        Long userId = Long.valueOf(headers.get("userId").get(0));
+        OrderDto dto = payService.preCreate(userId, productId);
         return ResponseEntity.ok(dto);
     }
 

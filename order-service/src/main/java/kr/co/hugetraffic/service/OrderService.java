@@ -37,12 +37,13 @@ public class OrderService {
     /*
     주문정보 생성하기
      */
-    public OrderDto createOrder(Long userId, Long productId) {
+    public OrderDto createOrder(Long userId, Long productId, String type) {
         // 주문 정보가 있으면 기존 정보를 불러오고 없으면 생성 (orElse메서드 쓰기)
         Order order = orderRepository.findByUserIdAndProductId(userId, productId)
                 .orElseGet(() -> orderRepository.save(Order.builder()
                         .userId(userId)
                         .productId(productId)
+                        .type(type)
                         .status(OrderStatus.PENDING.getOrderStatus()).build()));
         return OrderDto.convert(order);
     }

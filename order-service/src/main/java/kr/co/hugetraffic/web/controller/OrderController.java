@@ -38,9 +38,10 @@ public class OrderController {
     해당 상품 주문정보 생성하기(status = pending)
      */
     @GetMapping("/feign/create/{productId}")
-    public ResponseEntity<OrderDto> create(@RequestParam("userId") Long userId,
-                                           @PathVariable("productId") Long productId) {
-        OrderDto dto = orderService.createOrder(userId, productId);
+    public ResponseEntity<OrderDto> create(@PathVariable("productId") Long productId,
+                                           @RequestParam("userId") Long userId,
+                                           @RequestParam("type") String type) {
+        OrderDto dto = orderService.createOrder(userId, productId, type);
         return ResponseEntity.ok(dto);
     }
 
