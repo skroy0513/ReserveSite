@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(name = "stock-service", url = "localhost:80/stock")
 public interface StockClient {
 
-    @GetMapping("/{productId}")
+    @GetMapping("/pre/{productId}")
     Integer getStock(@PathVariable Long productId);
 
-    @PostMapping("/decrease/{productId}")
+    @PostMapping("/pre/decrease/{productId}")
     Integer decreaseStock(@PathVariable Long productId);
 
-    @PostMapping("/increase/{productId}")
+    @PostMapping("/pre/increase/{productId}")
     Integer increaseStock(@PathVariable Long productId);
 }
