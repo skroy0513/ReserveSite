@@ -10,7 +10,7 @@ spring:
     include:
       - dev
   application:
-    name: stock-service
+    name: stockRedis-service
 
 eureka:
   client:

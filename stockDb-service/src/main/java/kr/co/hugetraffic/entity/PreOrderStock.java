@@ -9,7 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
-@Table(name = "pre_order_stock")
+@Table(name = "preorder_stock")
 @Data
 @Builder
 @NoArgsConstructor

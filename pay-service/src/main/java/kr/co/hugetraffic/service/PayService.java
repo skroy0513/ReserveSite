@@ -65,6 +65,7 @@ public class PayService {
         }
         // 성공한 경우 db에서 재고를 줄일 것
         stockDbClient.decreaseStock(productId);
+        // 주문 상태 성공으로 바꾸기
         OrderDto dto = orderClient.successOrder(productId, userId);
         return dto;
     }
@@ -78,9 +79,11 @@ public class PayService {
             orderClient.failOrder(productId, userId);
             throw new RuntimeException("결제에 실패하였습니다.");
         }
-        // 성공한 경우 redis, db에서 재고를 줄일 것
+        // 성공한 경우 redis에서 재고를 줄일 것
         stockRedisClientClient.decreaseStock(productId);
+        // 주문상태 성공으로 바꾸기
         OrderDto dto = orderClient.successOrder(productId, userId);
+        // db에서 재고를 줄일 것
         stockDbClient.decreasePreStock(productId);
         return dto;
     }
