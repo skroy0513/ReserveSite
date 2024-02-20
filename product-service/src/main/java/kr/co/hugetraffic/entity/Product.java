@@ -33,10 +33,4 @@ public class Product extends BaseDateTimeEntity{
 
     @Column(name = "product_price")
     private int price;
-
-    @Column(name = "is_preorder")
-    private boolean isPreorder;
-
-    @Column(name = "product_open_time")
-    private LocalDateTime openTime;
 }
