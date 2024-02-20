@@ -20,12 +20,6 @@ public class StockRedisService {
     @Value("${inventory.stock}")
     private int maxStock;
 
-    public int getStockById(Long productId) {
-        Stock stock = stockRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundException("해당 상품이 없습니다."));
-        return  stock.getStock();
-    }
-
     public int decreaseStock(Long productId) {
         String productIdstr = String.valueOf(productId);
         Long stock = redisTemplate.opsForValue().decrement(productIdstr);
