@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/stock")
+@RequestMapping("/db/stock")
 @RequiredArgsConstructor
 public class StockDbController {
 
@@ -19,19 +19,25 @@ public class StockDbController {
         return ResponseEntity.ok(stock);
     }
 
-    // redis에 저장된 재고수량을 감소(결제 진입 -> 결제 성공)
+    // DB에 저장된 예약상품 재고수량을 불러오기
+    @GetMapping("/pre/{productId}")
+    public ResponseEntity<Integer> getPreOrderStock(@PathVariable Long productId) {
+        int stock = stockService.getPreOrderStockById(productId);
+        return ResponseEntity.ok(stock);
+    }
+
+    // db에 저장된 재고수량을 감소(결제 진입 -> 결제 성공)
     @PostMapping("/decrease/{productId}")
     public ResponseEntity<Integer> decreaseStock(@PathVariable Long productId) {
         int stock = stockService.decreaseStock(productId);
         return ResponseEntity.ok(stock);
     }
 
-    // redis에 저장된 재고수량을 증가(결제 진입 -> 결제 실패)
-    @PostMapping("/increase/{productId}")
-    public ResponseEntity<Integer> increaseStock(@PathVariable Long productId) {
-        int stock = stockService.increaseStock(productId);
+    // db에 저장된 예약상품 재고수량을 감소(결제 진입 -> 결제 성공)
+    @PostMapping("/pre/decrease/{productId}")
+    public ResponseEntity<Integer> decreasePreStock(@PathVariable Long productId) {
+        int stock = stockService.decreasePreStock(productId);
         return ResponseEntity.ok(stock);
     }
-
 }
 

@@ -2,8 +2,8 @@ package kr.co.hugetraffic.service;
 
 import kr.co.hugetraffic.client.OrderClient;
 import kr.co.hugetraffic.client.PreOrderProductClient;
-import kr.co.hugetraffic.client.ProductClient;
-import kr.co.hugetraffic.client.StockClient;
+import kr.co.hugetraffic.client.StockDbClient;
+import kr.co.hugetraffic.client.StockRedisClient;
 import kr.co.hugetraffic.dto.OrderDto;
 import kr.co.hugetraffic.exception.NotEnoughStock;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 public class PayService {
 
     private final PreOrderProductClient preOrderProductClient;
-    private final ProductClient productClient;
-    private final StockClient stockClient;
+    private final StockDbClient stockDbClient;
+    private final StockRedisClient stockRedisClientClient;
     private final OrderClient orderClient;
 
     /*
@@ -27,7 +27,7 @@ public class PayService {
      */
     public OrderDto create(Long userId, Long productId) {
         // Stock 모듈과 통신해서 재고가 있는지 확인, 없으면 에러
-        int stock = stockClient.getStock(productId);
+        int stock = stockDbClient.getStock(productId);
         if (stock <= 0) {
             throw new NotEnoughStock("재고가 부족합니다.");
         }
@@ -46,7 +46,7 @@ public class PayService {
         }
 
         // Stock 모듈과 통신해서 재고가 있는지 확인, 없으면 에러
-        int stock = stockClient.getStock(productId);
+        int stock = stockDbClient.getStock(productId);
         if (stock <= 0) {
             throw new NotEnoughStock("재고가 부족합니다.");
         }
@@ -64,7 +64,7 @@ public class PayService {
             throw new RuntimeException("결제에 실패하였습니다.");
         }
         // 성공한 경우 db에서 재고를 줄일 것
-        stockClient.decreaseStock(productId);
+        stockDbClient.decreaseStock(productId);
         OrderDto dto = orderClient.successOrder(productId, userId);
         return dto;
     }
@@ -79,8 +79,9 @@ public class PayService {
             throw new RuntimeException("결제에 실패하였습니다.");
         }
         // 성공한 경우 redis, db에서 재고를 줄일 것
+        stockRedisClientClient.decreaseStock(productId);
         OrderDto dto = orderClient.successOrder(productId, userId);
-        stockClient.decreaseStock(productId);
+        stockDbClient.decreasePreStock(productId);
         return dto;
     }
 }

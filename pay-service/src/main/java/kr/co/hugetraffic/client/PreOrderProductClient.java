@@ -8,9 +8,6 @@ import java.time.LocalDateTime;
 
 @FeignClient(name = "preOrderProduct-service", url = "localhost:80/pre/product/feign")
 public interface PreOrderProductClient {
-    
-    @GetMapping("/isPreOrder/{productId}")
-    Boolean isPreOrder(@PathVariable Long productId);
 
     @GetMapping("/getOpenTime/{productId}")
     LocalDateTime getOpenTime(@PathVariable Long productId);

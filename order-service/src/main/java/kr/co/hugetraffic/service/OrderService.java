@@ -1,6 +1,7 @@
 package kr.co.hugetraffic.service;
 
-import kr.co.hugetraffic.client.StockClient;
+import kr.co.hugetraffic.client.StockDbClient;
+import kr.co.hugetraffic.client.StockRedisClient;
 import kr.co.hugetraffic.dto.OrderDto;
 import kr.co.hugetraffic.entity.Order;
 import kr.co.hugetraffic.entity.OrderStatus;
@@ -18,7 +19,8 @@ import java.util.List;
 @Slf4j
 public class OrderService {
 
-    private final StockClient stockClient;
+    private final StockDbClient stockDbClient;
+    private final StockRedisClient stockRedisClient;
     private final OrderRepository orderRepository;
 
     /*
@@ -58,9 +60,9 @@ public class OrderService {
                 .orElseThrow(() -> new NotFoundException("주문정보가 없습니다."));
         if (order.getStatus().equals("success")) {
             if (order.getType().equals("GENERAL")) {
-
+                stockDbClient.increaseStock(productId);
             } else if (order.getType().equals("PREORDER")) {
-
+                stockRedisClient.increaseStock(productId);
             }
             throw new NotFoundException("이미 주문한 제품입니다.");
         }

@@ -1,6 +1,6 @@
 package kr.co.hugetraffic.web.controller;
 
-import kr.co.hugetraffic.service.StockService;
+import kr.co.hugetraffic.service.StockRedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/stock")
 @RequiredArgsConstructor
-public class StockController {
+public class StockRedisController {
 
-    private final StockService stockService;
+    private final StockRedisService stockService;
 
     // DB에 저장된 재고수량을 불러오기
     @GetMapping("/{productId}")

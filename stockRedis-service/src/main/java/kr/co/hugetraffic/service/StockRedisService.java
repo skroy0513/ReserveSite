@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class StockService {
+public class StockRedisService {
 
     private final StockRepository stockRepository;
     private final RedisTemplate redisTemplate;

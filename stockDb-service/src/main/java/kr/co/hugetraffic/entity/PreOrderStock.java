@@ -9,14 +9,14 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
-@Table(name = "stock")
+@Table(name = "pre_order_stock")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class Stock{
+public class PreOrderStock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
