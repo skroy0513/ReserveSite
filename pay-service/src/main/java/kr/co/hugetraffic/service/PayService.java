@@ -63,6 +63,21 @@ public class PayService {
             orderClient.failOrder(productId, userId);
             throw new RuntimeException("결제에 실패하였습니다.");
         }
+        // 성공한 경우 db에서 재고를 줄일 것
+        stockClient.decreaseStock(productId);
+        OrderDto dto = orderClient.successOrder(productId, userId);
+        return dto;
+    }
+
+    /*
+    예약 상품 결제 시도
+     */
+    public OrderDto prePay(Long userId, Long productId) {
+        // 20%의 유저는 결제 실패(랜덤 확률)
+        if(Math.random() <= 0.2) {
+            orderClient.failOrder(productId, userId);
+            throw new RuntimeException("결제에 실패하였습니다.");
+        }
         // 성공한 경우 redis, db에서 재고를 줄일 것
         OrderDto dto = orderClient.successOrder(productId, userId);
         stockClient.decreaseStock(productId);

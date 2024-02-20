@@ -53,8 +53,19 @@ public class PayController {
     public ResponseEntity<OrderDto> payToOrder(@PathVariable Long productId,
                                                @RequestHeader HttpHeaders headers) {
         Long userId = Long.valueOf(headers.get("userId").get(0));
-        log.info("userId : {}", userId);
         OrderDto dto = payService.pay(userId,productId);
+        return ResponseEntity.ok(dto);
+    }
+
+    /*
+   예약 상품 결제 시도
+   주문 정보를 갱신하고, 상황에 맞춰 재고를 조절한다.
+    */
+    @PostMapping("/pre/{productId}")
+    public ResponseEntity<OrderDto> prePayToOrder(@PathVariable Long productId,
+                                                  @RequestHeader HttpHeaders headers) {
+        Long userId = Long.valueOf(headers.get("userId").get(0));
+        OrderDto dto = payService.prePay(userId,productId);
         return ResponseEntity.ok(dto);
     }
 }

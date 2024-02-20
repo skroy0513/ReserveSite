@@ -1,5 +1,6 @@
 package kr.co.hugetraffic.service;
 
+import kr.co.hugetraffic.client.StockClient;
 import kr.co.hugetraffic.dto.OrderDto;
 import kr.co.hugetraffic.entity.Order;
 import kr.co.hugetraffic.entity.OrderStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 @Slf4j
 public class OrderService {
 
+    private final StockClient stockClient;
     private final OrderRepository orderRepository;
 
     /*
@@ -55,6 +57,11 @@ public class OrderService {
         Order order = orderRepository.findByUserIdAndProductId(userId, productId)
                 .orElseThrow(() -> new NotFoundException("주문정보가 없습니다."));
         if (order.getStatus().equals("success")) {
+            if (order.getType().equals("GENERAL")) {
+
+            } else if (order.getType().equals("PREORDER")) {
+
+            }
             throw new NotFoundException("이미 주문한 제품입니다.");
         }
         order.setStatus(OrderStatus.SUCCESS.getOrderStatus());
