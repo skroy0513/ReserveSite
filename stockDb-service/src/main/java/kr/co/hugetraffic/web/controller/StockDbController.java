@@ -33,6 +33,13 @@ public class StockDbController {
         return ResponseEntity.ok(stock);
     }
 
+    //db에 저장된 재고수량을 증가(결제 진입 -> 고객 상황으로 취소)
+    @PostMapping("/increase/{productId}")
+    public ResponseEntity<Integer> increaseStock(@PathVariable Long productId) {
+        int stock = stockService.increaseStock(productId);
+        return ResponseEntity.ok(stock);
+    }
+
     // db에 저장된 예약상품 재고수량을 감소(결제 진입 -> 결제 성공)
     @PostMapping("/pre/decrease/{productId}")
     public ResponseEntity<Integer> decreasePreStock(@PathVariable Long productId) {

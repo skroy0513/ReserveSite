@@ -19,6 +19,8 @@ public class StockDbService {
 
     private final StockRepository stockRepository;
     private final PreOrderStockRepository preOrderStockRepository;
+    @Value("${inventory.stock}")
+    private int maxValue;
 
     /*
     일반 상품 재고 불러오기
@@ -48,6 +50,20 @@ public class StockDbService {
             throw new NotEnoughStock("재고가 부족합니다.");
         }
         stock.setStock(stock.getStock() - 1);
+        stockRepository.save(stock);
+        return stock.getStock();
+    }
+
+    /*
+    db에 저장된 일반 상품 재고 증가
+     */
+    public int increaseStock(Long productId) {
+        Stock stock = stockRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("해당 상품이 없습니다."));
+        stock.setStock(stock.getStock() + 1);
+        if (stock.getStock() > maxValue) {
+            stock.setStock(maxValue);
+        }
         stockRepository.save(stock);
         return stock.getStock();
     }
