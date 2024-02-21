@@ -4,9 +4,11 @@ import kr.co.hugetraffic.entity.Product;
 import kr.co.hugetraffic.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -42,18 +44,4 @@ public class ProductController {
         int stock = productService.getStockById(productId);
         return ResponseEntity.ok(stock);
     }
-
-    @GetMapping("/feign/isPreOrder/{productId}")
-    public ResponseEntity<Boolean> isPreOrder(@PathVariable Long productId) {
-        boolean result = productService.isPreOrder(productId);
-        return ResponseEntity.ok(result);
-    }
-
-    @GetMapping("/feign/getOpenTime/{productId}")
-    public ResponseEntity<LocalDateTime> getOpenTime(@PathVariable Long productId) {
-        LocalDateTime openTime = productService.getOpenTime(productId);
-        return ResponseEntity.ok(openTime);
-    }
-
-
 }

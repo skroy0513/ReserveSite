@@ -6,9 +6,9 @@ logging:
     root: info
 
 spring:
-  profiles:
-    include:
-      - dev
+#  profiles:
+#    include:
+#      - dev
   application:
     name: pay-service
 

@@ -12,9 +12,11 @@
             <option value="$PROJECT_DIR$/api-gateway" />
             <option value="$PROJECT_DIR$/order-service" />
             <option value="$PROJECT_DIR$/pay-service" />
+            <option value="$PROJECT_DIR$/preOrderProduct-service" />
             <option value="$PROJECT_DIR$/product-service" />
             <option value="$PROJECT_DIR$/service-discovery" />
-            <option value="$PROJECT_DIR$/stock-service" />
+            <option value="$PROJECT_DIR$/stockDb-service" />
+            <option value="$PROJECT_DIR$/stockRedis-service" />
           </set>
         </option>
       </GradleProjectSettings>

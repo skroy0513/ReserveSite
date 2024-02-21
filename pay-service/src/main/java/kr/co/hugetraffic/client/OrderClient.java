@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface OrderClient {
 
     @GetMapping("/create/{productId}")
-    OrderDto createOrder(@PathVariable("productId") Long productId, @RequestParam("userId") Long userId);
+    OrderDto createOrder(@PathVariable("productId") Long productId, @RequestParam("userId") Long userId, @RequestParam("type") String type);
 
     @GetMapping("/success/{productId}")
-    OrderDto successOrder(@PathVariable("productId") Long productId, @RequestParam("userId") Long userId);
+    OrderDto successOrder(@PathVariable("productId") Long productId, @RequestParam("userId") Long userId, @RequestParam("type") String type);
 
     @GetMapping("/fail/{productId}")
-    OrderDto failOrder(@PathVariable("productId") Long productId, @RequestParam("userId") Long userId);
+    OrderDto failOrder(@PathVariable("productId") Long productId, @RequestParam("userId") Long userId, @RequestParam("type") String type);
 }

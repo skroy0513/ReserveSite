@@ -32,5 +32,7 @@ public class Order extends BaseDateTimeEntity{
     @Column(name = "order_status")
     private String status;
 
+    @Column(name = "product_type")
+    private String type;
 
 }
