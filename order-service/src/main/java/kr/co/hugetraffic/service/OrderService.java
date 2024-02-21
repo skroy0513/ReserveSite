@@ -43,7 +43,7 @@ public class OrderService {
      */
     public OrderDto createOrder(Long userId, Long productId, String type) {
         // 주문 정보가 있으면 기존 정보를 불러오고 없으면 생성 (orElse메서드 쓰기)
-        Order order = orderRepository.findByUserIdAndProductId(userId, productId)
+        Order order = orderRepository.findByUserIdAndProductIdAndType(userId, productId, type)
                 .orElseGet(() -> orderRepository.save(Order.builder()
                         .userId(userId)
                         .productId(productId)
@@ -55,8 +55,8 @@ public class OrderService {
     /*
     주문 성공상태로 변환
      */
-    public OrderDto successOrder(Long userId, Long productId) {
-        Order order = orderRepository.findByUserIdAndProductId(userId, productId)
+    public OrderDto successOrder(Long userId, Long productId, String type) {
+        Order order = orderRepository.findByUserIdAndProductIdAndType(userId, productId, type)
                 .orElseThrow(() -> new NotFoundException("주문정보가 없습니다."));
         if (order.getStatus().equals("success")) {
             if (order.getType().equals("GENERAL")) {
@@ -74,8 +74,8 @@ public class OrderService {
     /*
     주문 실패상태로 변환
      */
-    public OrderDto failOrder(Long userId, Long productId) {
-        Order order = orderRepository.findByUserIdAndProductId(userId, productId)
+    public OrderDto failOrder(Long userId, Long productId, String type) {
+        Order order = orderRepository.findByUserIdAndProductIdAndType(userId, productId, type)
                 .orElseThrow(() -> new NotFoundException("주문정보가 없습니다."));
         order.setStatus(OrderStatus.FAIL.getOrderStatus());
         orderRepository.save(order);

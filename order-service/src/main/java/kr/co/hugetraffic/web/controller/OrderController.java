@@ -9,10 +9,7 @@ import org.apache.http.client.methods.HttpHead;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,8 +24,8 @@ public class OrderController {
     /*
     userId로 주문정보 가져오기
      */
-    @GetMapping("/{orderId}")
-    public ResponseEntity<List<OrderDto>> getOrder(HttpHeaders headers) {
+    @GetMapping("/my-order")
+    public ResponseEntity<List<OrderDto>> getOrder(@RequestHeader HttpHeaders headers) {
         Long userId = Long.valueOf(headers.get("userId").get(0));
         List<OrderDto> dto = orderService.getOrder(userId);
         return ResponseEntity.ok(dto);
@@ -49,9 +46,10 @@ public class OrderController {
     해당 상품 주문정보 성공하기(status = success)
      */
     @GetMapping("/feign/success/{productId}")
-    public ResponseEntity<OrderDto> success(@RequestParam("userId") Long userId,
-                                            @PathVariable Long productId) {
-        OrderDto dto = orderService.successOrder(userId, productId);
+    public ResponseEntity<OrderDto> success(@PathVariable("productId") Long productId,
+                                            @RequestParam("userId") Long userId,
+                                            @RequestParam("type") String type) {
+        OrderDto dto = orderService.successOrder(userId, productId, type);
         return ResponseEntity.ok(dto);
     }
 
@@ -59,9 +57,10 @@ public class OrderController {
     해당 상품 주문정보 실패하기(status = fail)
      */
     @GetMapping("/feign/fail/{productId}")
-    public ResponseEntity<OrderDto> fail(@RequestParam("userId") Long userId,
-                                         @PathVariable Long productId) {
-        OrderDto dto = orderService.failOrder(userId, productId);
+    public ResponseEntity<OrderDto> fail(@PathVariable("productId") Long productId,
+                                         @RequestParam("userId") Long userId,
+                                         @RequestParam("type") String type) {
+        OrderDto dto = orderService.failOrder(userId, productId, type);
         return ResponseEntity.ok(dto);
     }
 }
