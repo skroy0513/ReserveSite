@@ -5,9 +5,6 @@
 docker-compose up
 ```
 ## 기능
-### 유저기능 (User-Service)
-- 회원가입 및 로그인
-- 프로필 수정
 ### 상품기능 (Product-Service)
 - 상품 목록
 - 상품 상세정보
