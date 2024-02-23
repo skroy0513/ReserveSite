@@ -8,10 +8,11 @@ docker-compose up
 ### 유저기능 (User-Service)
 - 회원가입 및 로그인
 - 프로필 수정
-### 상품기능 (Activity-Service)
+### 상품기능 (Product-Service)
 - 상품 목록
 - 상품 상세정보
-- 상품 재고 
+- 상품 재고
+### 결제기능 (Pay-Service)
 - 결제 진입
 - 결제 시도
 - 주문 정보
