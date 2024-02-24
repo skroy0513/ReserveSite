@@ -66,6 +66,11 @@ public class OrderService {
             }
             throw new NotFoundException("이미 주문한 제품입니다.");
         }
+        // 20%의 유저는 결제 실패(랜덤 확률)
+        if(Math.random() <= 0.2) {
+            failOrder(productId, userId, order.getType());
+            throw new RuntimeException("결제에 실패하였습니다.");
+        }
         order.setStatus(OrderStatus.SUCCESS.getOrderStatus());
         orderRepository.save(order);
         return OrderDto.convert(order);
@@ -78,6 +83,11 @@ public class OrderService {
         Order order = orderRepository.findByUserIdAndProductIdAndType(userId, productId, type)
                 .orElseThrow(() -> new NotFoundException("주문정보가 없습니다."));
         order.setStatus(OrderStatus.FAIL.getOrderStatus());
+        if (order.getType().equals("GENERAL")) {
+            stockDbClient.increaseStock(productId);
+        } else if (order.getType().equals("PREORDER")) {
+            stockRedisClient.increaseStock(productId);
+        }
         orderRepository.save(order);
         return OrderDto.convert(order);
     }
