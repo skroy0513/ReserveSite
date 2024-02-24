@@ -1,8 +1,5 @@
 package kr.co.hugetraffic.web.controller;
 
-import feign.Response;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.Path;
 import kr.co.hugetraffic.dto.OrderDto;
 import kr.co.hugetraffic.service.PayService;
 import lombok.RequiredArgsConstructor;

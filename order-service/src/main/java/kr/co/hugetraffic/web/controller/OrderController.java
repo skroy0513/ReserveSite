@@ -1,11 +1,9 @@
 package kr.co.hugetraffic.web.controller;
 
-import jakarta.ws.rs.Path;
 import kr.co.hugetraffic.dto.OrderDto;
 import kr.co.hugetraffic.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.client.methods.HttpHead;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,7 +13,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/order")
+@RequestMapping("/orders")
 @Slf4j
 public class OrderController {
 

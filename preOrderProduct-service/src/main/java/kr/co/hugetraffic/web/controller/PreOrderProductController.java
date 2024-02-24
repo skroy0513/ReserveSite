@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pre/product")
+@RequestMapping("/pre/products")
 @RequiredArgsConstructor
 public class PreOrderProductController {
 
@@ -28,7 +28,7 @@ public class PreOrderProductController {
     /*
     상품의 상세정보를 불러온다.
      */
-    @GetMapping("/detail")
+    @GetMapping("/details")
     public ResponseEntity<PreOrderProduct> getdetail(@RequestParam("id") Long productId) {
         PreOrderProduct product = preOrderProductService.getProductById(productId);
         return ResponseEntity.ok(product);
@@ -46,7 +46,7 @@ public class PreOrderProductController {
     /*
     상품의 오픈시간을 불러온다.
      */
-    @GetMapping("/feign/getOpenTime/{productId}")
+    @GetMapping("/feign/open-time/{productId}")
     public ResponseEntity<LocalDateTime> getOpenTime(@PathVariable Long productId) {
         LocalDateTime openTime = preOrderProductService.getOpenTime(productId);
         return ResponseEntity.ok(openTime);
