@@ -10,6 +10,7 @@ import kr.co.hugetraffic.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class OrderService {
     /*
     주문정보 생성하기
      */
+    @Transactional
     public OrderDto createOrder(Long userId, Long productId, String type) {
         // 주문 정보가 있으면 기존 정보를 불러오고 없으면 생성 (orElse메서드 쓰기)
         Order order = orderRepository.findByUserIdAndProductIdAndType(userId, productId, type)
@@ -55,6 +57,7 @@ public class OrderService {
     /*
     주문 성공상태로 변환
      */
+    @Transactional
     public OrderDto successOrder(Long userId, Long productId, String type) {
         Order order = orderRepository.findByUserIdAndProductIdAndType(userId, productId, type)
                 .orElseThrow(() -> new NotFoundException("주문정보가 없습니다."));
@@ -79,6 +82,7 @@ public class OrderService {
     /*
     주문 실패상태로 변환
      */
+    @Transactional
     public OrderDto failOrder(Long userId, Long productId, String type) {
         Order order = orderRepository.findByUserIdAndProductIdAndType(userId, productId, type)
                 .orElseThrow(() -> new NotFoundException("주문정보가 없습니다."));
