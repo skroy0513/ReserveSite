@@ -9,6 +9,7 @@ import kr.co.hugetraffic.exception.NotEnoughStock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +26,7 @@ public class PayService {
     /*
     결제 화면 진입
      */
+    @Transactional
     public OrderDto create(Long userId, Long productId) {
         // Stock 모듈과 통신해서 재고가 있는지 확인, 없으면 에러
         int stock = stockDbClient.getStock(productId);
@@ -38,6 +40,7 @@ public class PayService {
     /*
     예약 상품 결제 화면 진입
      */
+    @Transactional
     public OrderDto preCreate(Long userId, Long productId) {
         LocalDateTime opentime =preOrderProductClient.getOpenTime(productId);
         LocalDateTime now = LocalDateTime.now();
@@ -57,12 +60,8 @@ public class PayService {
     /*
     결제 시도
      */
+    @Transactional
     public OrderDto pay(Long userId, Long productId) {
-        // 20%의 유저는 결제 실패(랜덤 확률)
-        if(Math.random() <= 0.2) {
-            orderClient.failOrder(productId, userId, "GENERAL");
-            throw new RuntimeException("결제에 실패하였습니다.");
-        }
         // 성공한 경우 db에서 재고를 줄일 것
         stockDbClient.decreaseStock(productId);
         // 주문 상태 성공으로 바꾸기
@@ -73,6 +72,7 @@ public class PayService {
     /*
     예약 상품 결제 시도
      */
+    @Transactional
     public OrderDto prePay(Long userId, Long productId) {
         // 성공한 경우 redis에서 재고를 줄일 것
         stockRedisClientClient.decreaseStock(productId);
