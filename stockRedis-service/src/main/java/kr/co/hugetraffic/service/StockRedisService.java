@@ -23,7 +23,6 @@ public class StockRedisService {
         Long stock = redisTemplate.opsForValue().decrement(productIdstr);
         int stockInt = stock.intValue();
         // redis의 재고가 0이 되면 db에 업데이트 하기
-        log.info("redis재고 수 -> {}", stockInt);
         if (stockInt == 0) {
             stockClient.updateStock(productId, stockInt);
         }
