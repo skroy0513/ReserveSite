@@ -1,5 +1,6 @@
 package kr.co.hugetraffic.service;
 
+import kr.co.hugetraffic.client.StockClient;
 import kr.co.hugetraffic.exception.NotEnoughStock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class StockRedisService {
 
     private final RedisTemplate redisTemplate;
+    private final StockClient stockClient;
     @Value("${inventory.stock}")
     private int maxStock;
 
@@ -20,6 +22,11 @@ public class StockRedisService {
         String productIdstr = String.valueOf(productId);
         Long stock = redisTemplate.opsForValue().decrement(productIdstr);
         int stockInt = stock.intValue();
+        // redis의 재고가 0이 되면 db에 업데이트 하기
+        log.info("redis재고 수 -> {}", stockInt);
+        if (stockInt == 0) {
+            stockClient.updateStock(productId, stockInt);
+        }
         if (stockInt < 0) {
             redisTemplate.opsForValue().set(productIdstr, "0");
             throw new NotEnoughStock("재고가 부족합니다.");

@@ -46,5 +46,13 @@ public class StockDbController {
         int stock = stockService.decreasePreStock(productId);
         return ResponseEntity.ok(stock);
     }
+
+    // redis에 저장된 재고가 0일경우(아니어도) redis의 재고를 db에 저장
+    @PostMapping("/pre/update/{productId}")
+    public ResponseEntity<Integer> updateStock(@PathVariable Long productId,
+                                               @RequestParam("stock") int stock) {
+        int dbstock = stockService.updateStock(productId, stock);
+        return ResponseEntity.ok(dbstock);
+    }
 }
 

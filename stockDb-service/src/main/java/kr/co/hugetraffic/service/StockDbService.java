@@ -81,4 +81,15 @@ public class StockDbService {
         preOrderStockRepository.save(stock);
         return stock.getStock();
     }
+
+    /*
+    redis의 재고를 db에 저장
+     */
+    public int updateStock(Long productId, int stock) {
+        PreOrderStock dbstock = preOrderStockRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("해당 상품이 없습니다."));
+        dbstock.setStock(stock);
+        preOrderStockRepository.save(dbstock);
+        return dbstock.getStock();
+    }
 }
