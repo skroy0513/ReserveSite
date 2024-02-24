@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -30,7 +30,7 @@ public class ProductController {
     /*
     상품의 상세정보를 불러온다.
      */
-    @GetMapping("/detail")
+    @GetMapping("/details")
     public ResponseEntity<Product> getdetail(@RequestParam("id") Long productId) {
         Product product = productService.getProductById(productId);
         return ResponseEntity.ok(product);
