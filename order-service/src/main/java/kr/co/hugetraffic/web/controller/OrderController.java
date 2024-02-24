@@ -22,7 +22,7 @@ public class OrderController {
     /*
     userId로 주문정보 가져오기
      */
-    @GetMapping("/my-order")
+    @GetMapping("/my")
     public ResponseEntity<List<OrderDto>> getOrder(@RequestHeader HttpHeaders headers) {
         Long userId = Long.valueOf(headers.get("userId").get(0));
         List<OrderDto> dto = orderService.getOrder(userId);
@@ -32,7 +32,7 @@ public class OrderController {
     /*
     해당 상품 주문정보 생성하기(status = pending)
      */
-    @GetMapping("/feign/create/{productId}")
+    @PostMapping("/feign/create/{productId}")
     public ResponseEntity<OrderDto> create(@PathVariable("productId") Long productId,
                                            @RequestParam("userId") Long userId,
                                            @RequestParam("type") String type) {
@@ -43,7 +43,7 @@ public class OrderController {
     /*
     해당 상품 주문정보 성공하기(status = success)
      */
-    @GetMapping("/feign/success/{productId}")
+    @PostMapping("/feign/success/{productId}")
     public ResponseEntity<OrderDto> success(@PathVariable("productId") Long productId,
                                             @RequestParam("userId") Long userId,
                                             @RequestParam("type") String type) {
@@ -54,7 +54,7 @@ public class OrderController {
     /*
     해당 상품 주문정보 실패하기(status = fail)
      */
-    @GetMapping("/feign/fail/{productId}")
+    @PostMapping("/feign/fail/{productId}")
     public ResponseEntity<OrderDto> fail(@PathVariable("productId") Long productId,
                                          @RequestParam("userId") Long userId,
                                          @RequestParam("type") String type) {
