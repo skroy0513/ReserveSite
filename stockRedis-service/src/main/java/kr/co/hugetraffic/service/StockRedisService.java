@@ -42,4 +42,10 @@ public class StockRedisService {
         }
         return stock.intValue();
     }
+
+    public int getStockByProductId(Long productId) {
+        String stockStr = (String) redisTemplate.opsForValue().get(String.valueOf(productId));
+        int stock = Integer.valueOf(stockStr);
+        return stock;
+    }
 }

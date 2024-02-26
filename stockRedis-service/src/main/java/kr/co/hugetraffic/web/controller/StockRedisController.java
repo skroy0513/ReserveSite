@@ -12,6 +12,12 @@ public class StockRedisController {
 
     private final StockRedisService stockService;
 
+    @GetMapping("/pre/{productId}")
+    public ResponseEntity<Integer> getStock(@PathVariable Long productId) {
+        int stock = stockService.getStockByProductId(productId);
+        return ResponseEntity.ok(stock);
+    }
+
     // redis에 저장된 재고수량을 감소(결제 진입 -> 결제 성공)
     @PostMapping("/decrease/{productId}")
     public ResponseEntity<Integer> decreaseStock(@PathVariable Long productId) {
@@ -25,6 +31,5 @@ public class StockRedisController {
         int stock = stockService.increaseStock(productId);
         return ResponseEntity.ok(stock);
     }
-
 }
 
