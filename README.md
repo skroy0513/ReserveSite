@@ -17,7 +17,7 @@
 
 
 ## 아키텍처
-![newsfeed](https://github.com/skroy0513/MSA-newsfeed/assets/117910568/d2a3801b-8c13-4a73-8b9e-5cfd2823ff81)
+![reservesite](https://github.com/skroy0513/hugeTraffic/assets/117910568/c6f2e074-c3a2-4a51-9b4b-a7fe0ac638c4)
 
 
 ## 프로젝트 기능
@@ -38,15 +38,16 @@
 <details>
 <summary>API 보기</summary>
 <div markdown="1">
-  
-![product-service](https://github.com/skroy0513/hugeTraffic/assets/117910568/40beb68c-a863-4b7c-b053-6f64445e575f)
+
 ![pay-service](https://github.com/skroy0513/hugeTraffic/assets/117910568/c91b66d4-ebf6-427c-bd9d-45d1ab6bf46a)
+![product-service](https://github.com/skroy0513/hugeTraffic/assets/117910568/40beb68c-a863-4b7c-b053-6f64445e575f)
 ![order-service](https://github.com/skroy0513/hugeTraffic/assets/117910568/edf477cc-bdbe-4830-b41d-0bdab1c92388)
 ![stock-service](https://github.com/skroy0513/hugeTraffic/assets/117910568/d2953703-16ec-4845-8ecf-d4d0205cc386)
 
 </div>
 </details>
 
-## [트러블슈팅](트러블슈팅 링크 넣기)
+## 트러블슈팅
+[![Tistory's Card] "트러블슈팅 작성한 링크 첨부하기" (https://github-readme-tistory-card.vercel.app/api?name=skroy0513&postId=)](https://github.com/loosie/github-readme-tistory-card)
 - 준비된 재고만큼 정확한 구매
 - 10,000건의 요청 처리 속도 높이기
