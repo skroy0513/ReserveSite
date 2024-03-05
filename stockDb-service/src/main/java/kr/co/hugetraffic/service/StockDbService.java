@@ -70,13 +70,24 @@ public class StockDbService {
     /*
     db에 저장된 예약 상품 재고 감소
      */
-    public int decreasePreStock(Long productId) {
+    public synchronized int decreasePreStock(Long productId) {
         PreOrderStock stock = preOrderStockRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException("해당 상품이 없습니다."));
         if (stock.getStock() <= 0) {
             throw new NotEnoughStock("재고가 부족합니다.");
         }
         stock.setStock(stock.getStock() - 1);
+        preOrderStockRepository.save(stock);
+        return stock.getStock();
+    }
+
+    public synchronized int increasePreStock(Long productId) {
+        PreOrderStock stock = preOrderStockRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("해당 상품이 없습니다."));
+        if (stock.getStock() > maxValue) {
+            stock.setStock(maxValue);
+        }
+        stock.setStock(stock.getStock() + 1);
         preOrderStockRepository.save(stock);
         return stock.getStock();
     }

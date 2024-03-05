@@ -73,9 +73,10 @@ public class PayService {
     예약 상품 결제 시도
      */
     @Transactional
-    public OrderDto prePay(Long userId, Long productId) {
+    public synchronized OrderDto prePay(Long userId, Long productId) {
         // 성공한 경우 redis에서 재고를 줄일 것
-        stockRedisClientClient.decreaseStock(productId);
+//        stockRedisClientClient.decreaseStock(productId);
+        stockDbClient.decreasePreStock(productId);
         // 주문상태 성공으로 바꾸기
         OrderDto dto = orderClient.successOrder(productId, userId, "PREORDER");
 //        // db에서 재고를 줄일 것

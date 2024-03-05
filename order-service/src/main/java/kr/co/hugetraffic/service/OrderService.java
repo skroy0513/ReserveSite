@@ -65,14 +65,16 @@ public class OrderService {
             if (order.getType().equals("GENERAL")) {
                 stockDbClient.increaseStock(productId);
             } else if (order.getType().equals("PREORDER")) {
-                stockRedisClient.increaseStock(productId);
+//                stockRedisClient.increaseStock(productId);
+                stockDbClient.increasePreStock(productId);
             }
             throw new NotFoundException("이미 주문한 제품입니다.");
         }
         // 20%의 유저는 결제 실패(랜덤 확률)
         if(Math.random() <= 0.2) {
-            failOrder(productId, userId, order.getType());
-            throw new RuntimeException("결제에 실패하였습니다.");
+            log.info("실패한 인원 {}", userId);
+            return failOrder(userId, productId, order.getType());
+//            throw new RuntimeException("결제에 실패하였습니다.");
         }
         order.setStatus(OrderStatus.SUCCESS.getOrderStatus());
         orderRepository.save(order);
@@ -90,8 +92,10 @@ public class OrderService {
         if (order.getType().equals("GENERAL")) {
             stockDbClient.increaseStock(productId);
         } else if (order.getType().equals("PREORDER")) {
-            stockRedisClient.increaseStock(productId);
+//            stockRedisClient.increaseStock(productId);
+            stockDbClient.increasePreStock(productId);
         }
+        log.info("주문상태 -> {}", order.getStatus());
         orderRepository.save(order);
         return OrderDto.convert(order);
     }
