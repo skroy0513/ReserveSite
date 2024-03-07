@@ -48,5 +48,5 @@
 
 ## 트러블슈팅
 [![Tistory's Card] "트러블슈팅 작성한 링크 첨부하기" (https://github-readme-tistory-card.vercel.app/api?name=skroy0513&postId=)](https://github.com/loosie/github-readme-tistory-card)
-- 준비된 재고만큼 정확한 구매
-- 10,000건의 요청 처리 속도 높이기
+- 준비된 재고만큼 정확한 구매 (동시성 이슈)
+- 오픈 시간 전에 예약 상품 구매 방지
