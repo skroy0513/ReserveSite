@@ -8,7 +8,6 @@
 - MySql
 - JPA
 - Redis
-- JWT
 - Feign Client
 
 
