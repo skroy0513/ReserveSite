@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -42,9 +44,15 @@ public class PayService {
      */
     @Transactional
     public OrderDto preCreate(Long userId, Long productId) {
+        // 서버의 시간대를 가져옴
+        ZoneId serverZoneId = ZoneId.systemDefault();
+        ZonedDateTime serverNow = ZonedDateTime.now();
+
         LocalDateTime opentime =preOrderProductClient.getOpenTime(productId);
-        LocalDateTime now = LocalDateTime.now();
-        if (now.isBefore(opentime)) {
+        ZonedDateTime serverOpentime = opentime.atZone(serverZoneId);
+        if (serverNow.isBefore(serverOpentime)) {
+            log.info("현재 시각 : {}", serverNow);
+            log.info("오픈 시각 : {}", serverOpentime);
             throw new RuntimeException("아직 상품을 구매할 수 없습니다.");
         }
 
@@ -65,8 +73,7 @@ public class PayService {
         // 성공한 경우 db에서 재고를 줄일 것
         stockDbClient.decreaseStock(productId);
         // 주문 상태 성공으로 바꾸기
-        OrderDto dto = orderClient.successOrder(productId, userId, "GENERAL");
-        return dto;
+        return orderClient.successOrder(productId, userId, "GENERAL");
     }
 
     /*
