@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface PreOrderStockRepository extends JpaRepository<PreOrderStock, Long> {
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT ps FROM PreOrderStock ps WHERE ps.id = :productId")
     Optional<PreOrderStock> findByIdWithPessimisticLock(Long productId);
 }

@@ -8,7 +8,6 @@ import kr.co.hugetraffic.dto.OrderDto;
 import kr.co.hugetraffic.exception.NotEnoughStock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
@@ -26,11 +25,11 @@ public class PayService {
     private final StockDbClient stockDbClient;
     private final StockRedisClient stockRedisClientClient;
     private final OrderClient orderClient;
-    private final RedissonClient redissonClient;
-
-    private static final int WAIT_TIME = 1;
-    private static final int LEASE_TIME = 2;
-    private static final String STOCK_LOCK = "stock_lock";
+//    private final RedissonClient redissonClient;
+//
+//    private static final int WAIT_TIME = 1;
+//    private static final int LEASE_TIME = 2;
+//    private static final String STOCK_LOCK = "stock_lock";
 
     /*
     결제 화면 진입
@@ -58,7 +57,7 @@ public class PayService {
         }
 
         // Stock 모듈과 통신해서 재고가 있는지 확인, 없으면 에러
-        int stock = stockDbClient.getStock(productId);
+        int stock = stockDbClient.getPreStock(productId);
         if (stock <= 0) {
             throw new NotEnoughStock("재고가 부족합니다.");
         }
@@ -89,4 +88,27 @@ public class PayService {
         OrderDto dto = orderClient.successOrder(productId, userId, "PREORDER");
         return dto;
     }
+
+//    public void decreaseStock(Long productId) {
+//        RLock lock = redissonClient.getLock(STOCK_LOCK);
+//
+//        try {
+//            if (!lock.tryLock(WAIT_TIME, LEASE_TIME, TimeUnit.SECONDS)) {
+//                log.error("lock획득 시도 실패");
+//                throw new RuntimeException();
+//            }
+//            log.debug("lock 획득");
+//            stockDbClient.decreasePreStock(productId);
+//        } catch (InterruptedException e) {
+//
+//        } finally {
+//            if (lock.isHeldByCurrentThread()) {
+//                lock.unlock();
+//                log.info("lock 반납");
+//            } else {
+//                log.error("lock 소유하지 않은 스레드");
+//                throw new RuntimeException();
+//            }
+//        }
+//    }
 }
