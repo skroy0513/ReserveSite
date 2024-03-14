@@ -1,5 +1,6 @@
 package kr.co.hugetraffic.web.controller;
 
+import jakarta.ws.rs.Path;
 import kr.co.hugetraffic.service.StockDbService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,12 @@ public class StockDbController {
     @PostMapping("/pre/decrease/{productId}")
     public ResponseEntity<Integer> decreasePreStock(@PathVariable Long productId) {
         int stock = stockService.decreasePreStock(productId);
+        return ResponseEntity.ok(stock);
+    }
+
+    @PostMapping("/pre/increase/{productId}")
+    public ResponseEntity<Integer> increasePreStock(@PathVariable Long productId) {
+        int stock = stockService.increasePreStock(productId);
         return ResponseEntity.ok(stock);
     }
 

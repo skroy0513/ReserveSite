@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -70,13 +71,26 @@ public class StockDbService {
     /*
     db에 저장된 예약 상품 재고 감소
      */
+    @Transactional
     public int decreasePreStock(Long productId) {
-        PreOrderStock stock = preOrderStockRepository.findById(productId)
+        PreOrderStock stock = preOrderStockRepository.findByIdWithPessimisticLock(productId)
                 .orElseThrow(() -> new NotFoundException("해당 상품이 없습니다."));
         if (stock.getStock() <= 0) {
             throw new NotEnoughStock("재고가 부족합니다.");
         }
         stock.setStock(stock.getStock() - 1);
+        preOrderStockRepository.save(stock);
+        return stock.getStock();
+    }
+
+    @Transactional
+    public int increasePreStock(Long productId) {
+        PreOrderStock stock = preOrderStockRepository.findByIdWithPessimisticLock(productId)
+                .orElseThrow(() -> new NotFoundException("해당 상품이 없습니다."));
+        if (stock.getStock() > maxValue) {
+            stock.setStock(maxValue);
+        }
+        stock.setStock(stock.getStock() + 1);
         preOrderStockRepository.save(stock);
         return stock.getStock();
     }

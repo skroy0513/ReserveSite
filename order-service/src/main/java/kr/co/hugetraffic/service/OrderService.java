@@ -71,8 +71,9 @@ public class OrderService {
         }
         // 20%의 유저는 결제 실패(랜덤 확률)
         if(Math.random() <= 0.2) {
-            failOrder(productId, userId, order.getType());
-            throw new RuntimeException("결제에 실패하였습니다.");
+            log.info("실패한 인원 {}", userId);
+            return failOrder(userId, productId, order.getType());
+//            throw new RuntimeException("결제에 실패하였습니다.");
         }
         order.setStatus(OrderStatus.SUCCESS.getOrderStatus());
         orderRepository.save(order);
@@ -92,7 +93,9 @@ public class OrderService {
         } else if (order.getType().equals("PREORDER")) {
             stockRedisClient.increaseStock(productId);
         }
+        log.info("주문상태 -> {}", order.getStatus());
         orderRepository.save(order);
+        log.error("결제에 실패하였습니다.");
         return OrderDto.convert(order);
     }
 }

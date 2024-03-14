@@ -16,4 +16,7 @@ public interface StockDbClient {
 
     @PostMapping("/increase/{productId}")
     Integer increaseStock(@PathVariable Long productId);
+
+    @PostMapping("/pre/increase/{productId}")
+    Integer increasePreStock(@PathVariable Long productId);
 }
