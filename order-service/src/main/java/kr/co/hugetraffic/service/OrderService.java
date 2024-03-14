@@ -97,6 +97,7 @@ public class OrderService {
         }
         log.info("주문상태 -> {}", order.getStatus());
         orderRepository.save(order);
+        log.error("결제에 실패하였습니다.");
         return OrderDto.convert(order);
     }
 }
