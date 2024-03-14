@@ -65,8 +65,7 @@ public class OrderService {
             if (order.getType().equals("GENERAL")) {
                 stockDbClient.increaseStock(productId);
             } else if (order.getType().equals("PREORDER")) {
-//                stockRedisClient.increaseStock(productId);
-                stockDbClient.increasePreStock(productId);
+                stockRedisClient.increaseStock(productId);
             }
             throw new NotFoundException("이미 주문한 제품입니다.");
         }
@@ -92,8 +91,7 @@ public class OrderService {
         if (order.getType().equals("GENERAL")) {
             stockDbClient.increaseStock(productId);
         } else if (order.getType().equals("PREORDER")) {
-//            stockRedisClient.increaseStock(productId);
-            stockDbClient.increasePreStock(productId);
+            stockRedisClient.increaseStock(productId);
         }
         log.info("주문상태 -> {}", order.getStatus());
         orderRepository.save(order);

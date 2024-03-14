@@ -8,6 +8,7 @@ import kr.co.hugetraffic.dto.OrderDto;
 import kr.co.hugetraffic.exception.NotEnoughStock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
@@ -82,57 +83,10 @@ public class PayService {
      */
     @Transactional
     public OrderDto prePay(Long userId, Long productId) {
-        OrderDto dto = null;
-        RLock lock = redissonClient.getLock(STOCK_LOCK);
-        try {
-            if (!lock.tryLock(WAIT_TIME, LEASE_TIME, TimeUnit.SECONDS)) {
-                log.error("lock획득 시도 실패");
-                throw new RuntimeException();
-            }
-            log.debug("lock 획득");
-            stockDbClient.decreasePreStock(productId);
-            dto = orderClient.successOrder(productId, userId, "PREORDER");
-
-        } catch (InterruptedException e) {
-
-        } finally {
-            if (lock.isHeldByCurrentThread()) {
-                lock.unlock();
-                log.info("lock 반납");
-            } else {
-                log.error("lock 소유하지 않은 스레드");
-                throw new RuntimeException();
-            }
-        }
         // 성공한 경우 redis에서 재고를 줄일 것
-//        stockRedisClientClient.decreaseStock(productId);
-//        stockDbClient.decreasePreStock(productId);
+        stockRedisClientClient.decreaseStock(productId);
         // 주문상태 성공으로 바꾸기
-//        OrderDto dto = orderClient.successOrder(productId, userId, "PREORDER");
+        OrderDto dto = orderClient.successOrder(productId, userId, "PREORDER");
         return dto;
     }
-
-//    public void decreaseStock(Long productId) {
-//        RLock lock = redissonClient.getLock(STOCK_LOCK);
-//
-//
-//        try {
-//            if (!lock.tryLock(WAIT_TIME, LEASE_TIME, TimeUnit.SECONDS)) {
-//                log.error("lock획득 시도 실패");
-//                throw new RuntimeException();
-//            }
-//            log.debug("lock 획득");
-//            stockDbClient.decreasePreStock(productId);
-//        } catch (InterruptedException e) {
-//
-//        } finally {
-//            if (lock.isHeldByCurrentThread()) {
-//                lock.unlock();
-//                log.info("lock 반납");
-//            } else {
-//                log.error("lock 소유하지 않은 스레드");
-//                throw new RuntimeException();
-//            }
-//        }
-//    }
 }
